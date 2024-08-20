@@ -1,0 +1,10 @@
+.user-info,
+.pages,
+.chart,
+.machine-list {
+    min-height: 150px;
+}
+
+.chart {
+    min-height: 300px;
+}

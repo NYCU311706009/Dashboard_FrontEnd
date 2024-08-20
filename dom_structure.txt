@@ -1,0 +1,6 @@
+                                dashboard
+                                /       \
+                        side bar            main content
+                        /   \           /        |      \   
+                user info   pages     chart    chart    machine list
+
