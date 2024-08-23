@@ -1,6 +1,8 @@
+                                   app
+                                    |
                                 dashboard
                                 /       \
-                        side bar            main content
-                        /   \           /        |      \   
-                user info   pages     chart    chart    machine list
+                        side bar          main content
+                        /   \           /           \   
+                user info   description     chart      machine list
 
