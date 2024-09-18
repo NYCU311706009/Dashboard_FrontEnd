@@ -4,13 +4,12 @@ import DistributionChart from './components/DistributionChart'
 import Data from './Data';
 import MachineList from './components/MachineTable';
 import { useState } from 'react';
+import QuantityChart from './components/QuantityChart';
 
 
 function Dashboard() {
-    const [humans, machines, description] = Data();
-    const qty = machines.reduce((acc, curr) => {
-      return acc + curr.quantity 
-    }, 0)
+    const [humans, machines] = Data();
+  
     const [showMalfunctionOnly, setShowMalfunctionOnly] = useState(false);
     const brokenMachine = machines.filter(machine => machine.currentState === 'MALFUNCTION');
     const filtered = showMalfunctionOnly ? brokenMachine : machines;
@@ -39,12 +38,7 @@ function Dashboard() {
                   alt="User"
                 ></img>
               </div>
-              <ul className="flex-grow-1 p-3 bg-white border">
-                <h5>交代事項</h5>
-                {description.map((description) => (
-                  <h6 key={description.id}>{description.note}</h6>
-                ))}
-              </ul>
+              
             </div>
           </aside>
 
@@ -52,28 +46,16 @@ function Dashboard() {
           {/* col: md 3+9 or lg 2+10 */}
           <div className="col-md-9 col-lg-10 d-flex flex-column p-3">
             <div className="row mb-3">
-              <div className="col-md-3 d-flex">
-                <div className="p-3 bg-white border">
-                  <h5>產線人員在各區的分配人數</h5>
-                  <DistributionChart type={"area"} raw_data={humans} />
-                </div>
-              </div>
-              <div className="col-md-3 d-flex">
+              <div className="col-md-6 d-flex">
                 <div className="p-3 bg-white border">
                   <h5>機台在區域的分佈</h5>
-                  <DistributionChart type={"area"} raw_data={machines} />
+                  <DistributionChart raw_data={machines} />
                 </div>
               </div>
-              <div className="col-md-3 d-flex">
+              <div className="col-md-6 d-flex">
                 <div className="p-3 bg-white border">
-                  <h5>當日機台生產總量統計:{qty}</h5>
-                  <DistributionChart type={"qty"} raw_data={machines} />
-                </div>
-              </div>
-              <div className="col-md-3 d-flex">
-                <div className="p-3 bg-white border">
-                  <h5>故障機台總量統計:{brokenMachine.length}</h5>
-                  <DistributionChart type={"area"} raw_data={brokenMachine} />
+                  <h5>每日機台生產總量趨勢:</h5>
+                  <QuantityChart machines = {machines} />
                 </div>
               </div>
             </div>
