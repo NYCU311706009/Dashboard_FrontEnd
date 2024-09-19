@@ -2,9 +2,10 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DistributionChart from './components/DistributionChart'
 import Data from './Data';
-import MachineList from './components/MachineTable';
+import MachineTable from './components/MachineTable';
 import { useState } from 'react';
 import QuantityChart from './components/QuantityChart';
+import HumanTable from './components/HumanTable';
 
 
 function Dashboard() {
@@ -13,6 +14,8 @@ function Dashboard() {
     const [showMalfunctionOnly, setShowMalfunctionOnly] = useState(false);
     const brokenMachine = machines.filter(machine => machine.currentState === 'MALFUNCTION');
     const filtered = showMalfunctionOnly ? brokenMachine : machines;
+    
+    const [searchQuery, setSearchQuery] = useState('');
     
 
 
@@ -38,13 +41,13 @@ function Dashboard() {
                   alt="User"
                 ></img>
               </div>
-              
             </div>
           </aside>
 
           {/* Main Content */}
           {/* col: md 3+9 or lg 2+10 */}
           <div className="col-md-9 col-lg-10 d-flex flex-column p-3">
+            {/* graph */}
             <div className="row mb-3">
               <div className="col-md-6 d-flex">
                 <div className="p-3 bg-white border">
@@ -55,11 +58,12 @@ function Dashboard() {
               <div className="col-md-6 d-flex">
                 <div className="p-3 bg-white border">
                   <h5>每日機台生產總量趨勢:</h5>
-                  <QuantityChart machines = {machines} />
+                  <QuantityChart machines={machines} />
                 </div>
               </div>
             </div>
 
+            {/* table */}
             <div className="flex-grow-1 p-3 bg-white border overflow-auto">
               <h5>機台目前的狀態統計</h5>
               <div className="form-check form-switch">
@@ -77,7 +81,21 @@ function Dashboard() {
                   {showMalfunctionOnly ? "只顯示當機機台" : "顯示所有機台"}
                 </label>
               </div>
-              <MachineList machines={filtered} />
+              <MachineTable machines={filtered} />
+            </div>
+
+            <div className="flex-grow-1 p-3 mt-3 bg-white border overflow-auto">
+              <input
+                type="text"
+                placeholder="Search by ID or Department"
+                value={searchQuery}
+                onChange={(e) => {setSearchQuery(e.target.value)}}
+              />
+              <HumanTable humans={humans.filter(
+                (human) =>
+                  human.id.toString().padStart(4, "0").includes(searchQuery) || human.department.toString().toLowerCase().includes(searchQuery.toLowerCase())
+              )} />
+              
             </div>
           </div>
         </div>
